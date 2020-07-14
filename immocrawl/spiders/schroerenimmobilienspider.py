@@ -19,5 +19,6 @@ class SchroerenImmobilienSpider(scrapy.Spider):
         yield {
             'url': response.url,
             'title': response.xpath('//h1/text()').get(),
-            'price': response.xpath('//span[@class=\'preis\']/text()').get()
+            'price': response.xpath('//span[@class=\'preis\']/text()').get(),
+            'images': response.xpath('//img[@sizes]/@src').getall()
         }
