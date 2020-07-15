@@ -1,6 +1,5 @@
 import scrapy
 
-
 class SchroerenImmobilienSpider(scrapy.Spider):
     name = "Schroeren-Immobilien"
 
