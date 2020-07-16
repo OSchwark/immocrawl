@@ -1,4 +1,7 @@
 import scrapy
+from scrapy.loader import ItemLoader
+
+from immocrawl.items import ImmocrawlItem
 
 
 class CarstensenImmobilienSpider(scrapy.Spider):
@@ -17,16 +20,20 @@ class CarstensenImmobilienSpider(scrapy.Spider):
 
     def parse_details_page(self, response):
         table_rows = response.xpath('//div[@class=\'details-mobile\']//tr')
+        details = self.get_details(table_rows)
+        loader = ItemLoader(item=ImmocrawlItem(), selector=response)
+        print(response.xpath("//div[contains(@class,'fotorama')]/img/@src"))
+        loader.add_xpath('title', "//div[@class='detail']/h2/text()")
+        loader.add_xpath('images', "//img[contains(@class,'fotorama')]/@src")
+        loader.add_value('url', response.url)
+        loader.add_value('price',  self.get_price(details))
+        yield loader.load_item()
+
+    def get_details(self, table_rows):
         details = {}
         for row in table_rows:
             details[row.xpath('./td[1]//text()').get()] = row.xpath('./td[2]//text()').get()
-        print(details)
-        yield {
-            'url': response.url,
-            'title': response.xpath('//div[@class=\'detail\']/h2/text()').get(),
-            'price': self.get_price(details),
-            'images': response.xpath('//div[contains(@class,\'fotorama\')]/img/@src').getall()
-        }
+        return details
 
     def get_price(self, details_dict):
         for key,value in details_dict.items():
