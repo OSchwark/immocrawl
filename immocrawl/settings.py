@@ -87,7 +87,11 @@ ROBOTSTXT_OBEY = True
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
 
-ITEM_PIPELINES = {'immocrawl.pipelines.MongoDBPipeline': 300}
+ITEM_PIPELINES = {
+    'immocrawl.pipelines.DuplicatesPipeline': 100,
+    'immocrawl.pipelines.MongoDBPipeline': 300
+}
+DELTAFETCH_ENABLED = True
 MONGODB_SERVER = "raspberrypi"
 MONGODB_PORT = 27017
 MONGODB_DB = "immocrawl"

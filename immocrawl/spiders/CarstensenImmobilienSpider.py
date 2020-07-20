@@ -22,11 +22,12 @@ class CarstensenImmobilienSpider(scrapy.Spider):
         table_rows = response.xpath('//div[@class=\'details-mobile\']//tr')
         details = self.get_details(table_rows)
         loader = ItemLoader(item=ImmocrawlItem(), selector=response)
-        print(response.xpath("//div[contains(@class,'fotorama')]/img/@src"))
         loader.add_xpath('title', "//div[@class='detail']/h2/text()")
         loader.add_xpath('images', "//img[contains(@class,'fotorama')]/@src")
         loader.add_value('url', response.url)
         loader.add_value('price',  self.get_price(details))
+        loader.add_value('id', details['externe Objnr'])
+        loader.add_value('source', self.name)
         yield loader.load_item()
 
     def get_details(self, table_rows):

@@ -10,6 +10,8 @@ from scrapy import Field
 class ImmocrawlItem(scrapy.Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
+    source = Field()
+    id = Field()
     url = Field()
     title = Field()
     images = Field()

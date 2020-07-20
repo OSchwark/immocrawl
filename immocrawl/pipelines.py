@@ -37,6 +37,29 @@ class MongoDBPipeline(object):
         return item
 
 
+class DuplicatesPipeline:
+    def __init__(self):
+        settings = get_project_settings()
+        connection = pymongo.MongoClient(
+            settings['MONGODB_SERVER'],
+            settings['MONGODB_PORT']
+        )
+        db = connection[settings['MONGODB_DB']]
+        self.collection = db[settings['MONGODB_COLLECTION']]
+        self.ids_seen = set()
+        for item in self.collection.find({}, {'id': 1, 'source': 1}):
+            print(item.get('source'))
+            print(item.get('id'))
+            self.ids_seen.add(item.get('source')[0] + item.get('id')[0])
+
+    def process_item(self, item, spider):
+        adapter = ItemAdapter(item)
+        if adapter['source'][0]+adapter['id'][0] in self.ids_seen:
+            raise DropItem("Duplicate item found: %r" % item)
+        else:
+            self.ids_seen.add(adapter['source'][0]+adapter['id'][0])
+            return item
+
 
 class ImmocrawlPipeline:
     def process_item(self, item, spider):
