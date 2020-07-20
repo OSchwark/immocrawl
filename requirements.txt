@@ -1,0 +1,4 @@
+scrapy~=2.2.0
+pymongo~=3.4.0
+itemadapter~=0.1.0
+setuptools~=41.4.0

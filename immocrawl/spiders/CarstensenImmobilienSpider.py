@@ -1,5 +1,6 @@
 import scrapy
 from scrapy.loader import ItemLoader
+from scrapy.loader.processors import TakeFirst
 
 from immocrawl.items import ImmocrawlItem
 

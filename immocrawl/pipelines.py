@@ -50,14 +50,14 @@ class DuplicatesPipeline:
         for item in self.collection.find({}, {'id': 1, 'source': 1}):
             print(item.get('source'))
             print(item.get('id'))
-            self.ids_seen.add(item.get('source')[0] + item.get('id')[0])
+            self.ids_seen.add(item.get('source') + item.get('id'))
 
     def process_item(self, item, spider):
         adapter = ItemAdapter(item)
-        if adapter['source'][0]+adapter['id'][0] in self.ids_seen:
+        if adapter['source']+adapter['id'] in self.ids_seen:
             raise DropItem("Duplicate item found: %r" % item)
         else:
-            self.ids_seen.add(adapter['source'][0]+adapter['id'][0])
+            self.ids_seen.add(adapter['source']+adapter['id'])
             return item
 
 
