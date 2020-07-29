@@ -1,3 +1,5 @@
+from datetime import datetime
+
 import scrapy
 from scrapy.loader import ItemLoader
 from scrapy.loader.processors import TakeFirst
@@ -29,6 +31,7 @@ class CarstensenImmobilienSpider(scrapy.Spider):
         loader.add_value('price',  self.get_price(details))
         loader.add_value('id', details['externe Objnr'])
         loader.add_value('source', self.name)
+        loader.add_value('indexed_date', datetime.now())
         yield loader.load_item()
 
     def get_details(self, table_rows):

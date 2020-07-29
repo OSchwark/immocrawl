@@ -17,3 +17,4 @@ class ImmocrawlItem(scrapy.Item):
     title = Field(output_processor=TakeFirst())
     images = Field()
     price = Field(output_processor=TakeFirst())
+    indexed_date = Field()

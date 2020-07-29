@@ -1,3 +1,5 @@
+from datetime import datetime
+
 import scrapy
 from scrapy.loader import ItemLoader
 
@@ -26,4 +28,5 @@ class SchroerenImmobilienSpider(scrapy.Spider):
         loader.add_xpath('price',  '//span[@class=\'preis\']/text()')
         loader.add_xpath('id', '//article[1]/@id')
         loader.add_value('source', self.name)
+        loader.add_value('indexed_date', datetime.now())
         yield loader.load_item()
